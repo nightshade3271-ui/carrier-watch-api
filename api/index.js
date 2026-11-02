@@ -19,3 +19,4 @@ module.exports = (req, res) => {
     documentation: 'https://carrier-watch-api.vercel.app'
   });
 };
+
