@@ -6,9 +6,11 @@ module.exports = (req, res) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-RapidAPI-Key, X-RapidAPI-Host, X-RapidAPI-Proxy-Secret');
 
-  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method === 'OPTIONS') { res.statusCode = 204; return res.end(); }
 
-  return res.status(200).json({
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'application/json');
+  return res.end(JSON.stringify({
     success: true,
     service: 'CarrierWatch API — US DOT & FMCSA Safety & Fraud Intelligence',
     version: '1.0.0',
@@ -19,6 +21,5 @@ module.exports = (req, res) => {
       severity: riskRules.riskFlags[k].severity,
       description: riskRules.riskFlags[k].description
     }))
-  });
+  }, null, 2));
 };
-

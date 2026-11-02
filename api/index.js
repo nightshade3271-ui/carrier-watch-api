@@ -2,7 +2,8 @@ module.exports = (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Content-Type', 'application/json');
 
-  res.status(200).json({
+  res.statusCode = 200;
+  res.end(JSON.stringify({
     status: 'ONLINE',
     service: 'CarrierWatch API',
     description: 'Commercial FMCSA Carrier Safety, Insurance & Freight Fraud Intelligence Gateway',
@@ -17,6 +18,5 @@ module.exports = (req, res) => {
     ],
     marketplace: 'https://rapidapi.com/user/rapidapi',
     documentation: 'https://carrier-watch-api.vercel.app'
-  });
+  }, null, 2));
 };
-

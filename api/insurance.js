@@ -6,19 +6,34 @@ module.exports = (req, res) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-RapidAPI-Key, X-RapidAPI-Host, X-RapidAPI-Proxy-Secret');
 
-  if (req.method === 'OPTIONS') return res.status(200).end();
-  if (!validateRapidApiRequest(req)) return res.status(403).json({ error: 'Unauthorized' });
+  if (req.method === 'OPTIONS') { res.statusCode = 204; return res.end(); }
+  if (!validateRapidApiRequest(req)) {
+    res.statusCode = 403;
+    res.setHeader('Content-Type', 'application/json');
+    return res.end(JSON.stringify({ error: 'Unauthorized' }));
+  }
 
-  const query = req.query.dot || req.query.mc || req.query.query;
-  if (!query) return res.status(400).json({ success: false, error: 'Provide ?dot=54283 or ?mc=135684' });
+  const q = req.query || {};
+  const query = q.dot || q.mc || q.query;
+  if (!query) {
+    res.statusCode = 400;
+    res.setHeader('Content-Type', 'application/json');
+    return res.end(JSON.stringify({ success: false, error: 'Provide ?dot=54283 or ?mc=135684' }));
+  }
 
   const carrier = findCarrier(query);
-  if (!carrier) return res.status(404).json({ success: false, error: `Carrier '${query}' not found.` });
+  if (!carrier) {
+    res.statusCode = 404;
+    res.setHeader('Content-Type', 'application/json');
+    return res.end(JSON.stringify({ success: false, error: `Carrier '${query}' not found.` }));
+  }
 
   const ins = carrier.insurance;
   const isCompliant = !ins.has_pending_cancellation && ins.bipd_on_file_usd >= ins.bipd_required_usd;
 
-  return res.status(200).json({
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'application/json');
+  return res.end(JSON.stringify({
     success: true,
     dot_number: carrier.dot_number,
     mc_number: carrier.mc_number,
@@ -45,6 +60,5 @@ module.exports = (req, res) => {
       has_pending_cancellation: ins.has_pending_cancellation,
       dispatch_verdict: isCompliant ? 'INSURANCE_VERIFIED__SAFE_TO_LOAD' : 'INSURANCE_FAILED__DO_NOT_LOAD'
     }
-  });
+  }, null, 2));
 };
-
