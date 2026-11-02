@@ -1,0 +1,269 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "CarrierWatch API",
+    "description": "Commercial US DOT & FMCSA Carrier Safety, Operating Authority, Insurance Verification & Freight Fraud Risk Intelligence API. Instant carrier vetting for freight brokers, dispatchers, and 3PLs.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "CarrierWatch Support",
+      "url": "https://carrier-watch-api.vercel.app"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://carrier-watch-api.vercel.app",
+      "description": "Production Vercel Edge Serverless Gateway"
+    }
+  ],
+  "paths": {
+    "/v1/carrier/lookup": {
+      "get": {
+        "summary": "Full Carrier Verification Lookup",
+        "description": "Returns complete motor carrier record by USDOT number, MC number, or legal name: operating authority status, fleet size, driver counts, safety rating, insurance audit, fraud risk score, and official federal docket links.",
+        "operationId": "getCarrierLookup",
+        "parameters": [
+          {
+            "name": "dot",
+            "in": "query",
+            "description": "US Department of Transportation (USDOT) number (e.g. 54283, 81014, 28419)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "54283"
+            }
+          },
+          {
+            "name": "mc",
+            "in": "query",
+            "description": "Motor Carrier (MC) docket number (e.g. 135684, 136818)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Company Legal Name or DBA search string",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Carrier record retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarrierLookupResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/carrier/risk-score": {
+      "get": {
+        "summary": "Get Carrier Fraud & Risk Score",
+        "description": "Proprietary CarrierWatch fraud risk assessment (0-100 score). Evaluates chameleon carrier age (<90 days), virtual mailbox terminals, pending insurance cancellations, OOS rates vs national averages, and provides dispatch recommendation.",
+        "operationId": "getCarrierRiskScore",
+        "parameters": [
+          {
+            "name": "dot",
+            "in": "query",
+            "description": "USDOT number",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "54283"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Risk assessment calculated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarrierRiskResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/carrier/insurance": {
+      "get": {
+        "summary": "Get Carrier Insurance Compliance Audit",
+        "description": "Audits active insurance coverage on file with FMCSA: verifies minimum $750k/$1M Commercial Auto BIPD threshold, cargo coverage, BMC-84 broker bond, policy expiration dates, and checks for pending cancellation notices.",
+        "operationId": "getCarrierInsurance",
+        "parameters": [
+          {
+            "name": "dot",
+            "in": "query",
+            "description": "USDOT number",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "54283"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Insurance audit completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarrierInsuranceResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/carrier/safety": {
+      "get": {
+        "summary": "Get Safety & Inspection History",
+        "description": "Retrieves 24-month federal inspection data, crash metrics (fatal, injury, towaway), and compares vehicle and driver Out-of-Service (OOS) percentages directly against US national benchmarks.",
+        "operationId": "getCarrierSafety",
+        "parameters": [
+          {
+            "name": "dot",
+            "in": "query",
+            "description": "USDOT number",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "54283"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Safety and inspection history retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarrierSafetyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/carrier/docket": {
+      "get": {
+        "summary": "Get Federal Government Docket Links",
+        "description": "Generates 1-click verified deep links to official FMCSA portals: SAFER Company Snapshot, Safety Measurement System (SMS) Profile, and Licensing & Insurance (L&I) database.",
+        "operationId": "getCarrierDocketLinks",
+        "parameters": [
+          {
+            "name": "dot",
+            "in": "query",
+            "description": "USDOT number",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "54283"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Federal docket links generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarrierDocketResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/carrier/stats": {
+      "get": {
+        "summary": "Get National Safety Benchmarks & Thresholds",
+        "description": "Returns current US national safety averages (vehicle OOS 22.26%, driver OOS 6.67%), statutory insurance minimums, and active fraud detection rules.",
+        "operationId": "getCarrierStats",
+        "responses": {
+          "200": {
+            "description": "National benchmarks retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarrierStatsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CarrierLookupResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "carrier": { "type": "object" },
+          "risk_assessment": { "type": "object" },
+          "federal_dockets": { "type": "object" }
+        }
+      },
+      "CarrierRiskResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "dot_number": { "type": "string" },
+          "mc_number": { "type": "string" },
+          "legal_name": { "type": "string" },
+          "operating_status": { "type": "string" },
+          "risk_assessment": { "type": "object" }
+        }
+      },
+      "CarrierInsuranceResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "dot_number": { "type": "string" },
+          "insurance_audit": { "type": "object" }
+        }
+      },
+      "CarrierSafetyResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "dot_number": { "type": "string" },
+          "safety_overview": { "type": "object" }
+        }
+      },
+      "CarrierDocketResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "dot_number": { "type": "string" },
+          "federal_dockets": { "type": "object" }
+        }
+      },
+      "CarrierStatsResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "national_benchmarks": { "type": "object" },
+          "insurance_mandates": { "type": "object" },
+          "fraud_risk_indicators": { "type": "array", "items": { "type": "object" } }
+        }
+      }
+    }
+  }
+}

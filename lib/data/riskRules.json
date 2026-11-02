@@ -1,0 +1,76 @@
+{
+  "nationalAverages": {
+    "vehicleOutOfServiceRate": 22.26,
+    "driverOutOfServiceRate": 6.67,
+    "hazmatOutOfServiceRate": 4.44
+  },
+  "insuranceThresholds": {
+    "generalFreightBIPD": 750000,
+    "hazardousMaterialsBIPD": 5000000,
+    "oilPetroleumBIPD": 1000000,
+    "standardBrokerBondBMC84": 75000,
+    "industryStandardCargo": 100000
+  },
+  "riskFlags": {
+    "AUTHORITY_REVOKED": {
+      "code": "AUTH_REVOKED",
+      "severity": "CRITICAL",
+      "penalty": 50,
+      "description": "Operating authority is REVOKED or INACTIVE by FMCSA. Load tendering prohibited."
+    },
+    "CHAMELEON_CARRIER_AGE": {
+      "code": "NEW_DOT_UNDER_90_DAYS",
+      "severity": "HIGH",
+      "penalty": 25,
+      "description": "Carrier registered USDOT number within last 90 days. High correlation with double-brokering and re-incorporation."
+    },
+    "CHAMELEON_CARRIER_AGE_180": {
+      "code": "NEW_DOT_UNDER_180_DAYS",
+      "severity": "MEDIUM",
+      "penalty": 15,
+      "description": "Carrier operating for less than 6 months. Subject to mandatory probationary safety audit."
+    },
+    "INSURANCE_LAPSE": {
+      "code": "INSURANCE_EXPIRED_OR_PENDING_CANCEL",
+      "severity": "CRITICAL",
+      "penalty": 40,
+      "description": "Commercial Auto BIPD or Cargo insurance has active cancellation notice on file with FMCSA."
+    },
+    "HIGH_VEHICLE_OOS": {
+      "code": "HIGH_VEHICLE_OOS_RATE",
+      "severity": "HIGH",
+      "penalty": 20,
+      "description": "Vehicle Out-of-Service inspection rate exceeds national average (>22.26%)."
+    },
+    "HIGH_DRIVER_OOS": {
+      "code": "HIGH_DRIVER_OOS_RATE",
+      "severity": "HIGH",
+      "penalty": 20,
+      "description": "Driver Out-of-Service inspection rate exceeds national average (>6.67%)."
+    },
+    "UNSATISFACTORY_SAFETY_RATING": {
+      "code": "UNSATISFACTORY_SAFETY",
+      "severity": "CRITICAL",
+      "penalty": 45,
+      "description": "FMCSA issued Unsatisfactory federal safety rating. Carrier cannot legally transport interstate freight."
+    },
+    "CONDITIONAL_SAFETY_RATING": {
+      "code": "CONDITIONAL_SAFETY",
+      "severity": "MEDIUM",
+      "penalty": 15,
+      "description": "FMCSA issued Conditional safety rating. Significant compliance deficiencies detected."
+    },
+    "FLEET_DRIVER_MISMATCH": {
+      "code": "ZERO_DRIVERS_REPORTED",
+      "severity": "HIGH",
+      "penalty": 20,
+      "description": "Carrier reports active power units but 0 commercial drivers on file with FMCSA."
+    },
+    "VIRTUAL_ADDRESS_DETECTED": {
+      "code": "VIRTUAL_MAILBOX_ADDRESS",
+      "severity": "HIGH",
+      "penalty": 25,
+      "description": "Physical terminal address resolves to a commercial mail forwarding service (UPS Store, Regus, virtual office) rather than an operating truck yard."
+    }
+  }
+}

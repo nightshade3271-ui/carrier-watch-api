@@ -1,0 +1,24 @@
+{
+  "name": "carrier-watch-api",
+  "version": "1.0.0",
+  "description": "US DOT & FMCSA Carrier Safety, Operating Authority, Insurance & Freight Fraud Risk Intelligence API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "fmcsa",
+    "dot-number",
+    "carrier-safety",
+    "freight-broker",
+    "trucking",
+    "logistics",
+    "insurance-verification",
+    "fraud-prevention",
+    "safer"
+  ],
+  "author": "CarrierWatch Team",
+  "license": "MIT",
+  "dependencies": {}
+}

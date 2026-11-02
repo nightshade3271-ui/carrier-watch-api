@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/v1/carrier/lookup",
+      "destination": "/api/lookup.js"
+    },
+    {
+      "source": "/v1/carrier/risk-score",
+      "destination": "/api/risk.js"
+    },
+    {
+      "source": "/v1/carrier/insurance",
+      "destination": "/api/insurance.js"
+    },
+    {
+      "source": "/v1/carrier/safety",
+      "destination": "/api/safety.js"
+    },
+    {
+      "source": "/v1/carrier/docket",
+      "destination": "/api/docket.js"
+    },
+    {
+      "source": "/v1/carrier/stats",
+      "destination": "/api/stats.js"
+    },
+    {
+      "source": "/api/sandbox",
+      "destination": "/api/sandbox.js"
+    },
+    {
+      "source": "/v1/status",
+      "destination": "/api/index.js"
+    }
+  ]
+}
